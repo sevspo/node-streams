@@ -1,6 +1,6 @@
-import { Stream } from "stream";
+import * as stream from "stream";
 
-export class RandomIntStream extends Stream.Readable {
+export class RandomIntStream extends stream.Readable {
   private _min: number;
   private _max: number;
   private _count: number;
@@ -24,8 +24,8 @@ export class RandomIntStream extends Stream.Readable {
       Math.floor(Math.random() * (this._max - this._min + 1)) + this._min;
 
     setTimeout(() => {
-      this.push(`${value}\n`);
+      this.push(value);
       this._index++;
-    }, 250);
+    }, 200);
   }
 }
