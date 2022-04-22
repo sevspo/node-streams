@@ -22,12 +22,30 @@ let count = 0;
 //   console.log("second", chunk);
 // });
 
-// stream.on("readable", () => {
+// The readable.pause() method has no effect if there is a 'readable'event listener
+// Because the stream is in a diferent reading mode.
+// only the fifth value will be read now because readable event has precedence over data
+// form the clone, so no data will be read in the first place.
+// clone.on("readable", () => {
 //   count += 1;
 //   if (count === 5) {
-//     console.log("fifth", stream.read());
+//     console.log("fifth", clone.read());
+//     clone.pause();
 //   }
 // });
+
+// this does work though
+clone.on("data", () => {
+  count += 1;
+  if (count === 5) {
+    console.log("fifth");
+    clone.pause();
+    setTimeout(() => {
+      console.log("resume");
+      clone.resume();
+    }, 1200);
+  }
+});
 
 // stream.on("resume", () => {
 //   console.log("stream flowing");
@@ -41,12 +59,20 @@ let count = 0;
 //   console.log("finished", writeStream.data);
 // });
 
-// writeStream.on("close", () => {
-//   console.log("closed", writeStream.data);
+// wStream2.on("close", () => {
+//   console.log("closed", wStream1.data);
 // });
 
 pipeline(stream, log1, wStream1, (err) => console.log(err));
 
 // so this works, i can pipe the same steam into two pipelines
 // but this does not seem to work in the multer storage example
-pipeline(stream, log2, wStream2, (err) => console.log(err));
+// pipeline(stream, log2, wStream2, (err) => console.log(err));
+
+pipeline(clone, log2, wStream2, (err) => console.log(err));
+
+// it also seems to work if there is no writable stream in the pipe, the transformStram seems to be enuogh
+// to get data flowing? => no, not without a listener!
+
+// pause means a stream stops emitting, but will coninue to process the data pushed into it
+// and build up the buffer.

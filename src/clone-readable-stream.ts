@@ -1,7 +1,7 @@
 import * as stream from "stream";
 
 // rewrite of the function above as a class
-// it works, but does not handle any errors and such
+// it works, kind of but does not handle any errors and cannot be paused independently
 export class CloneReadable extends stream.Readable {
   private _readableStream: stream.Readable;
   private _options: any;
