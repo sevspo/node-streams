@@ -11,7 +11,7 @@ export class WriteMemoryStream extends stream.Writable {
     super({ objectMode: true });
   }
 
-  _write(chunk: number, encoding: string, callback: Function) {
+  _write(chunk: number, encoding: string, callback: () => void) {
     this._data.push(chunk);
     callback();
   }

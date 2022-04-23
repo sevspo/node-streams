@@ -4,9 +4,12 @@ import * as stream from "stream";
 // it works, kind of but does not handle any errors and cannot be paused independently
 export class CloneReadable extends stream.Readable {
   private _readableStream: stream.Readable;
-  private _options: any;
+  private _options: stream.ReadableOptions;
 
-  constructor(readableStream: stream.Readable, options: any) {
+  constructor(
+    readableStream: stream.Readable,
+    options: stream.ReadableOptions
+  ) {
     super(options);
     this._readableStream = readableStream;
     this._options = options;
@@ -24,5 +27,6 @@ export class CloneReadable extends stream.Readable {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   _read() {}
 }
