@@ -1,4 +1,5 @@
 import stream from "stream";
+// todo: use the readable-steam package instead!
 
 export class WriteMemoryStream extends stream.Writable {
   private _data: number[] = [];
