@@ -77,4 +77,7 @@ export function runStreamsPlayground() {
 
   // pause means a stream stops emitting, but will coninue to process the data pushed into it
   // and build up the buffer.
+
+  // antoher important note: a stream when piped does not need a writeable stream to start emitting values.
+  // an event listener on a readable stream is enough.
 }
