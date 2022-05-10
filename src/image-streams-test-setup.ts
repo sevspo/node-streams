@@ -30,17 +30,11 @@ export function runImageStreamsSetup() {
     // const memStream = new WriteMemoryStream();
     // const memStream = new mem.WritableStream();
     const rereadable = new re.ReReadable();
+    const write = fs.createWriteStream(
+      path.join(__dirname, "..", "uploads", "test-img-dimensions.jpg")
+    );
 
     let imgDimensions: { width?: number; height?: number } = {};
-
-    // imgStream.on("readable", () => {
-    //   console.log("data");
-    // });
-
-    // await asyncPipeline(imgStream, imgDimensionsStream, memStream);
-
-    // return imgDimensions;
-    // console.log(imgDimensions);
 
     pipeline(imgStream, imgDimensionsStream, rereadable, (err) => {
       if (err) {
@@ -50,24 +44,10 @@ export function runImageStreamsSetup() {
 
     imgDimensionsStream.on("dimensions", (dimensions) => {
       imgDimensions = dimensions;
+      console.log("dimensions", imgDimensions);
+      const re = rereadable.rewind();
+      re.pipe(write);
     });
-
-    // imgStream.once("data", () => {
-    //   console.log(imgDimensions);
-    //   // console.log("data", memStream.toBuffer());
-
-    //   const stream = Readable.from(memStream.toBuffer());
-
-    //   const write = fs.createWriteStream(
-    //     path.join(__dirname, "..", "uploads", "test.jpg")
-    //   );
-
-    //   pipeline(stream, write, (err) => {
-    //     if (err) {
-    //       console.error(err);
-    //     }
-    //   });
-    // });
   }
 
   testImageDimensionsStream();
