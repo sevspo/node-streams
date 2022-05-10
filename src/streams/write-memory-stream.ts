@@ -8,8 +8,8 @@ export class WriteMemoryStream extends stream.Writable {
     return this._data;
   }
 
-  constructor() {
-    super({ objectMode: true });
+  constructor(options?: stream.WritableOptions) {
+    super(options);
   }
 
   _write(chunk: number, encoding: string, callback: () => void) {
