@@ -30,9 +30,6 @@ export function runImageStreamsSetup() {
     // const memStream = new WriteMemoryStream();
     // const memStream = new mem.WritableStream();
     const rereadable = new re.ReReadable();
-    const write = fs.createWriteStream(
-      path.join(__dirname, "..", "uploads", "test-img-dimensions.jpg")
-    );
 
     let imgDimensions: { width?: number; height?: number } = {};
 
@@ -44,7 +41,14 @@ export function runImageStreamsSetup() {
 
     imgDimensionsStream.on("dimensions", (dimensions) => {
       imgDimensions = dimensions;
-      console.log("dimensions", imgDimensions);
+      const write = fs.createWriteStream(
+        path.join(
+          __dirname,
+          "..",
+          "uploads",
+          `test-img-${dimensions.width}x${dimensions.height}.jpg`
+        )
+      );
       const re = rereadable.rewind();
       re.pipe(write);
     });
